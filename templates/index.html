@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horse Betting</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid black; padding: 10px; text-align: center; }
+        button { padding: 5px 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Horse Betting</h1>
+    <h2>Balance: ${{ balance }}</h2>
+    
+    <h3>Available Bets</h3>
+    <table>
+        <tr>
+            <th>Horse</th>
+            <th>Odds</th>
+            <th>Bet</th>
+        </tr>
+        {% for horse in horses %}
+        <tr>
+            <td>{{ horse.name }}</td>
+            <td>{{ horse.odds }}</td>
+            <td>
+                <form action="/bet" method="post">
+                    <input type="hidden" name="horse_id" value="{{ horse.id }}">
+                    <input type="hidden" name="horse_name" value="{{ horse.name }}">
+                    <input type="hidden" name="odds" value="{{ horse.odds }}">
+                    <input type="number" name="amount" placeholder="Bet Amount" required>
+                    <button type="submit">Bet</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    <h3>Placed Bets</h3>
+    <ul>
+        {% for bet in bets %}
+            <li>
+                {{ bet.name }} - ${{ bet.amount }} @ {{ bet.odds }}
+                {% if bet.get('lost') %} (Lost) {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    
+    <form action="/fetch_results" method="get">
+        <button type="submit">Fetch Results</button>
+    </form>
+</body>
+</html>
