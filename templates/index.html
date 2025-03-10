@@ -4,52 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Horse Betting</title>
-    <style>
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid black; padding: 10px; text-align: center; }
-        button { padding: 5px 10px; cursor: pointer; }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Horse Betting</h1>
-    <h2>Balance: ${{ balance }}</h2>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center p-6">
+    <h1 class="text-4xl font-bold mb-4">🐎 Horse Betting</h1>
+    <h2 class="text-2xl mb-6">Balance: <span class="font-semibold text-green-400">${{ balance }}</span></h2>
     
-    <h3>Available Bets</h3>
-    <table>
-        <tr>
-            <th>Horse</th>
-            <th>Odds</th>
-            <th>Bet</th>
-        </tr>
-        {% for horse in horses %}
-        <tr>
-            <td>{{ horse.name }}</td>
-            <td>{{ horse.odds }}</td>
-            <td>
-                <form action="/bet" method="post">
-                    <input type="hidden" name="horse_id" value="{{ horse.id }}">
-                    <input type="hidden" name="horse_name" value="{{ horse.name }}">
-                    <input type="hidden" name="odds" value="{{ horse.odds }}">
-                    <input type="number" name="amount" placeholder="Bet Amount" required>
-                    <button type="submit">Bet</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="w-full max-w-4xl bg-gray-800 p-6 rounded-lg shadow-lg">
+        <h3 class="text-xl font-semibold mb-4">Available Bets</h3>
+        <table class="w-full border border-gray-700 rounded-lg overflow-hidden">
+            <tr class="bg-gray-700 text-gray-300">
+                <th class="p-3">Horse</th>
+                <th class="p-3">Odds</th>
+                <th class="p-3">Bet</th>
+            </tr>
+            {% for horse in horses %}
+            <tr class="border-b border-gray-700 hover:bg-gray-600">
+                <td class="p-3">{{ horse.name }}</td>
+                <td class="p-3 text-yellow-400">{{ horse.odds }}</td>
+                <td class="p-3">
+                    <form action="/bet" method="post" class="flex gap-2">
+                        <input type="hidden" name="horse_id" value="{{ horse.id }}">
+                        <input type="hidden" name="horse_name" value="{{ horse.name }}">
+                        <input type="hidden" name="odds" value="{{ horse.odds }}">
+                        <input type="number" name="amount" placeholder="Bet Amount" required class="p-2 rounded bg-gray-700 text-white border border-gray-500 w-24">
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Bet</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
     
-    <h3>Placed Bets</h3>
-    <ul>
-        {% for bet in bets %}
-            <li>
-                {{ bet.name }} - ${{ bet.amount }} @ {{ bet.odds }}
-                {% if bet.get('lost') %} (Lost) {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="w-full max-w-4xl bg-gray-800 p-6 mt-6 rounded-lg shadow-lg">
+        <h3 class="text-xl font-semibold mb-4">Placed Bets</h3>
+        <ul>
+            {% for bet in bets %}
+                <li class="p-2 bg-gray-700 rounded mb-2 flex justify-between">
+                    <span>{{ bet.name }} - ${{ bet.amount }} @ {{ bet.odds }}</span>
+                    {% if bet.get('lost') %} <span class="text-red-400">(Lost)</span> {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
     
-    <form action="/fetch_results" method="get">
-        <button type="submit">Fetch Results</button>
+    <form action="/fetch_results" method="get" class="mt-6">
+        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg">Fetch Results</button>
     </form>
 </body>
 </html>
