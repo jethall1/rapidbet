@@ -6,4 +6,5 @@ source venv/bin/activate
 pip install flask
 pip install requests
 
-python main.py~~~
+python main.py
+~~~
